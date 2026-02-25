@@ -6,6 +6,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
+-- lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
@@ -19,12 +20,15 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+--plugins
 require("lazy").setup({
-	-- UI & Theme
 	{
 		"ellisonleao/gruvbox.nvim",
 		priority = 1000,
 		config = function()
+			require("gruvbox").setup({
+				contrast = "hard",
+			})
 			vim.cmd.colorscheme("gruvbox")
 		end,
 	},
@@ -32,11 +36,11 @@ require("lazy").setup({
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			require("lualine").setup()({
+			require("lualine").setup({
 				options = {
-					theme = "catppuccin",
-					component_seperators = { left = "□", right = "□" },
-					section_seperators = { left = "□", right = "□" },
+					theme = "gruvbox",
+					component_separators = { left = "", right = "" },
+					section_separators = { left = "", right = "" },
 					globalstatus = true,
 				},
 
@@ -62,8 +66,6 @@ require("lazy").setup({
 			vim.keymap.set("n", "<C-n>", "NvimTreeToggle<CR>", { silent = true })
 		end,
 	},
-
-	-- Which-Key (The shortcut helper)
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -71,16 +73,12 @@ require("lazy").setup({
 			require("which-key").setup()
 		end,
 	},
-
-	-- Gitsigns (Git status in the sidebar)
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
 			require("gitsigns").setup()
 		end,
 	},
-
-	-- Telescope (The Fuzzy Finder)
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.8",
@@ -91,7 +89,6 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Search Text" })
 		end,
 	},
-
 	{
 		"stevearc/conform.nvim",
 		config = function()
@@ -110,7 +107,7 @@ require("lazy").setup({
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
-		priority = 1000,
+		--priority = 1000,
 		config = function()
 			require("catppuccin").setup({
 				flavour = "mocha",
@@ -129,10 +126,11 @@ require("lazy").setup({
 					lualine = true,
 				},
 			})
-			vim.cmd.colorscheme("catppuccin")
+			--vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 
+	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
@@ -147,6 +145,8 @@ require("lazy").setup({
 			})
 		end,
 	},
+
+	-- lsp
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -193,9 +193,9 @@ require("lazy").setup({
 	},
 })
 
+-- keymaps
 local map = vim.keymap.set
 
--- Your Core List
 map("n", "<leader>j", ":NvimTreeToggle<cr>", { desc = "Toggle Explorer" })
 map("n", "<leader>tn", ":tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader>tp", ":tabprevious<cr>", { desc = "Previous Tab" })
