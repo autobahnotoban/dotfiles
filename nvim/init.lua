@@ -1,4 +1,3 @@
--- 1. Basics
 vim.g.mapleader = " "
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -7,7 +6,6 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
--- 2. Bootstrap Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
@@ -21,7 +19,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- 3. Plugins
 require("lazy").setup({
 	-- UI & Theme
 	{
@@ -95,7 +92,6 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Conform (Auto-formatting for C, Python, and Go)
 	{
 		"stevearc/conform.nvim",
 		config = function()
@@ -104,7 +100,7 @@ require("lazy").setup({
 					lua = { "stylua" },
 					python = { "black" },
 					c = { "clang-format" },
-					go = { "goimports", "gofmt" }, -- Auto-adds imports on save!
+					go = { "goimports", "gofmt" },
 				},
 				format_on_save = { timeout_ms = 500, lsp_fallback = true },
 			})
@@ -137,7 +133,6 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Treesitter (Advanced Highlighting)
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
@@ -152,8 +147,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-
-	-- LSP & Autocompletion
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -200,7 +193,6 @@ require("lazy").setup({
 	},
 })
 
--- 4. Keymaps (Your Favorites + New Power Moves)
 local map = vim.keymap.set
 
 -- Your Core List
@@ -209,9 +201,6 @@ map("n", "<leader>tn", ":tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader>tp", ":tabprevious<cr>", { desc = "Previous Tab" })
 map("n", "<leader>tc", ":tabnew<cr>", { desc = "Create New Tab" })
 map("n", "<leader>tx", ":tabclose<cr>", { desc = "Close Current Tab" })
--- Tab is handled automatically inside the 'cmp.setup' above for autocompletion.
-
--- New Essential Engineering Shortcuts
 map("n", "<leader>ff", ":Telescope find_files<cr>", { desc = "Find Files" })
 map("n", "<leader>fg", ":Telescope live_grep<cr>", { desc = "Search inside Files" })
 map("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
