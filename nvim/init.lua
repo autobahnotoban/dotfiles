@@ -20,7 +20,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
---plugins
+-- plugins
 require("lazy").setup({
 	{
 		"ellisonleao/gruvbox.nvim",
@@ -39,8 +39,8 @@ require("lazy").setup({
 			require("lualine").setup({
 				options = {
 					theme = "gruvbox",
-					component_separators = { left = "", right = "" },
-					section_separators = { left = "", right = "" },
+					component_separators = { left = "", right = "" },
+					section_separators = { left = "", right = "" },
 					globalstatus = true,
 				},
 
@@ -137,7 +137,7 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter").setup({
-				ensure_installed = { "lua", "python", "c", "gomod", "gowork" },
+				ensure_installed = { "lua", "python", "c", "gomod", "gowork", "rust" },
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
@@ -147,6 +147,7 @@ require("lazy").setup({
 		end,
 	},
 
+	-- autopairs (auto-close brackets/quotes, integrated with cmp)
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
@@ -154,6 +155,7 @@ require("lazy").setup({
 			local autopairs = require("nvim-autopairs")
 			autopairs.setup({})
 
+			-- make autopairs play nicely with nvim-cmp completions
 			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 			require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		end,
@@ -195,6 +197,7 @@ require("lazy").setup({
 				mapping = cmp.mapping.preset.insert({
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
 					["<Tab>"] = cmp.mapping.select_next_item(),
+					["<S-Tab>"] = cmp.mapping.select_prev_item(),
 					["<C-Space>"] = cmp.mapping.complete(),
 				}),
 				sources = cmp.config.sources(
