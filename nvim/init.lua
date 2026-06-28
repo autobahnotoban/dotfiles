@@ -98,6 +98,7 @@ require("lazy").setup({
 					python = { "black" },
 					c = { "clang-format" },
 					go = { "goimports", "gofmt" },
+					rust = { "rustfmt" },
 				},
 				format_on_save = { timeout_ms = 500, lsp_fallback = true },
 			})
@@ -146,6 +147,18 @@ require("lazy").setup({
 		end,
 	},
 
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = function()
+			local autopairs = require("nvim-autopairs")
+			autopairs.setup({})
+
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
+	},
+
 	-- lsp
 	{
 		"neovim/nvim-lspconfig",
@@ -162,7 +175,7 @@ require("lazy").setup({
 		config = function()
 			require("mason").setup()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "pyright", "clangd", "lua_ls", "gopls" },
+				ensure_installed = { "pyright", "clangd", "lua_ls", "gopls", "rust_analyzer" },
 				handlers = {
 					function(server_name)
 						require("lspconfig")[server_name].setup({
